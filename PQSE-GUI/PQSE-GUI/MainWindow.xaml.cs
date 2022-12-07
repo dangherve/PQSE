@@ -91,14 +91,38 @@ namespace PQSE_GUI
 
         public void LoadPokemon()
         {
-            foreach (var poke in currentView.Save.SerializeData.characterStorage.characterDataDictionary)
-            {
+            //timeTicks
+            //monsterNo level
+            foreach (var poke in currentView.Save.SerializeData.characterStorage.characterDataDictionary.OrderBy(p => p.Value.data.monsterNo))
+                {
                 Button pokeButton = new Button();
                 pokeButton.Tag = poke.Value.data;
+
                 pokeButton.Click += new RoutedEventHandler(EditPoke);
 
                 Image pokeFace = new Image();
-                pokeFace.Source = new BitmapImage(new Uri("icons/pokemon/" + poke.Value.data.monsterNo + ".png", UriKind.Relative));
+                char test = poke.Value.data.name.ElementAt(1);
+                if (test == '\0')
+                {
+                    poke.Value.data.level = 99;
+                }
+
+                if (poke.Value.data.level == 100) {
+                    pokeFace.Source = new BitmapImage(new Uri("icons/pokemon/0.png", UriKind.Relative));
+                    poke.Value.data.hp = 1500;
+                    poke.Value.data.attack = 1500;
+                    poke.Value.timeTicks = poke.Value.data.monsterNo* 10000000 + 7664489;
+
+                    for (int i = 0; i < 9; i++)
+                    {
+                        poke.Value.data.potential.slotPropertyTypes[i]=2;
+                    }
+                }
+                else
+                {
+                    poke.Value.timeTicks = (poke.Value.data.monsterNo - 152) * -1000000000 + 7664489;
+                    pokeFace.Source = new BitmapImage(new Uri("icons/pokemon/" + poke.Value.data.monsterNo + ".png", UriKind.Relative));
+                }
                 pokeFace.Width = 48;
                 pokeFace.Height = 48;
 

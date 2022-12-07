@@ -16,6 +16,8 @@ namespace PQSE_GUI
             SerializeData = ZeroFormatterSerializer.Deserialize<SerializeData>(saveDec, 56);
         }
 
+        public SaveManager() { }
+
         public byte[] Export()
         {
             var head = ZeroFormatterSerializer.Serialize(CheckData);
